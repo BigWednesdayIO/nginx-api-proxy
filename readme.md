@@ -33,6 +33,21 @@ node build-ssl-secret.js starbigwednesdayio path-to-cert path-to-key
  kubectl create -f ./kubernetes/rc.yaml
  ```
 
+## Update steps
+ - Build the new image and push to container engine
+ ``` shell
+ docker build -t gcr.io/${PROJECT_ID}/nginx-api-proxy:v2 .
+ ```
+  ``` shell
+ gcloud docker push gcr.io/${PROJECT_ID}/nginx-api-proxy:v2
+ ```
+
+ - Peform a rolling update on the replication controller
+```shell
+PREVIOUS=$(kubectl get rc -l app=nginx | cut -f1 -d " " | tail -1)
+kubectl rolling-update $PREVIOUS nginx-rc-v2 --image=gcr.io/${PROJECT_ID}/nginx-api-proxy:v2
+```
+
 ## Useful docs
 - http://kubernetes.io/v1.0/docs/user-guide/connecting-applications.html#securing-the-service
 - http://blog.kubernetes.io/2015/07/strong-simple-ssl-for-kubernetes.html
