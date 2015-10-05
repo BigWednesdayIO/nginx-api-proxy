@@ -1,0 +1,21 @@
+machine:
+  python:
+    version: 2.7.3
+  services:
+    - docker
+
+dependencies:
+  cache_directories:
+    - ~/google-cloud-sdk
+  override:
+    - scripts/ensure_glcoud_installed.sh
+
+test:
+  override:
+    - echo
+
+deployment:
+  prod:
+    branch: feature/basic_proxy
+    commands:
+      - scripts/deploy.sh
