@@ -8,12 +8,12 @@ This repos contains a docker image and config for an TLS api proxy to work in Go
 node build-ssl-secret.js starbigwednesdayio path-to-cert path-to-key
 ```
 
-## Deployment steps
+## Initial deployment steps
  - Create the secret:
  ``` shell
  kubectl create -f ./starbigwednesdayio-secret.json
  ```
- - Set project id:
+ - Set project id variable:
  ``` shell
  export PROJECT_ID=first-footing-108508
  ```

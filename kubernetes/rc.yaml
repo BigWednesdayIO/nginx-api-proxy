@@ -15,7 +15,7 @@ spec:
           secretName: starbigwednesdayio
       containers:
       - name: nginxhttps
-        image: gcr.io/first-footing-108508/nginx-api-proxy:v3
+        image: gcr.io/first-footing-108508/nginx-api-proxy:v1
         ports:
         - containerPort: 443
         volumeMounts:
