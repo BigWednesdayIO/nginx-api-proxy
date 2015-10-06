@@ -2,12 +2,16 @@ apiVersion: v1
 kind: ReplicationController
 metadata:
   name: nginx-rc
+  labels:
+    app: nginx
+    env: development
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: nginx
+        env: production
     spec:
       volumes:
       - name: secret-volume
@@ -15,7 +19,7 @@ spec:
           secretName: starbigwednesdayio
       containers:
       - name: nginxhttps
-        image: gcr.io/first-footing-108508/nginx-api-proxy:v1
+        image: gcr.io/first-footing-108508/nginx-api-proxy:7fdbd51
         ports:
         - containerPort: 443
         volumeMounts:

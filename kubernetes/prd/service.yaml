@@ -4,6 +4,7 @@ metadata:
   name: nginx-svc
   labels:
     app: nginx
+    env: production
 spec:
   ports:
   - port: 443
@@ -11,4 +12,5 @@ spec:
     name: https
   selector:
     app: nginx
+    env: production
   type: LoadBalancer

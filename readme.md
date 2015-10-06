@@ -35,13 +35,13 @@ node build-ssl-secret.js starbigwednesdayio ./my-cert.crt ./my-key.key
  - Create the service:
 
  ``` shell
- kubectl create -f ./kubernetes/service.yml
+ kubectl create -f ./kubernetes/prd/service.yml --namespace=production
  ```
 
  - Create the replication controller (note that the image field must refer to the image and tag created above):
 
  ``` shell
- kubectl create -f ./kubernetes/rc.yaml
+ kubectl create -f ./kubernetes/prd/rc.yaml --namespace=production
  ```
 
 ## Update steps
