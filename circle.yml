@@ -24,4 +24,4 @@ deployment:
   prod:
     branch: feature/basic_proxy
     commands:
-      - scripts/deploy.sh nginx-api-proxy app=nginx
+      - scripts/deploy.sh nginx-api-proxy app=nginx default

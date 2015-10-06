@@ -2,16 +2,17 @@
 
 set -e
 
-usage="Usage: './deploy.sh image-name selector' e.g. './deploy.sh my-img-name app=myApp'"
+usage="Usage: './deploy.sh image-name selector namespace' e.g. './deploy.sh my-img-name app=myApp development'"
 
-if [[ $# -ne 2 ]]; then
-    echo "Incorrect number of arguments, 2 required";
+if [[ $# -ne 3 ]]; then
+    echo "Incorrect number of arguments, 3 required";
     echo $usage;
     exit 1;
 fi
 
 IMAGE=$1;
 SELECTOR=$2;
+NAMESPACE=$3
 
 VERSION_ID=${CIRCLE_SHA1:0:7}
 REMOTE_REPOSITORY=gcr.io/${CLOUDSDK_CORE_PROJECT}
@@ -35,4 +36,4 @@ ssh-keygen -f ~/.ssh/google_compute_engine -N ""
 
 # Rolling update
 OLD_RC=$(~/google-cloud-sdk/bin/kubectl get rc -l ${SELECTOR} | cut -f1 -d " " | tail -1)
-~/google-cloud-sdk/bin/kubectl rolling-update ${OLD_RC} ${IMAGE}-${VERSION_ID} --image=${REMOTE_REPOSITORY}/${IMAGE}:${VERSION_ID}
+~/google-cloud-sdk/bin/kubectl rolling-update ${OLD_RC} ${IMAGE}-${VERSION_ID} --image=${REMOTE_REPOSITORY}/${IMAGE}:${VERSION_ID} --namespace=${NAMESPACE}
