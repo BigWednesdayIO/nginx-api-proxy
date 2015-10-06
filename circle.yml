@@ -4,6 +4,12 @@ machine:
   services:
     - docker
 
+general:
+  branches:
+    only:
+      - master
+      - /feature\/.*/
+
 dependencies:
   cache_directories:
     - ~/google-cloud-sdk
@@ -16,6 +22,6 @@ test:
 
 deployment:
   prod:
-    branch: feature/basic_proxy
+    tag: /release-.*/
     commands:
       - scripts/deploy.sh nginx-api-proxy app=nginx
