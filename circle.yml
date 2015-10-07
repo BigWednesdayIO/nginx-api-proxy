@@ -27,6 +27,6 @@ test:
 
 deployment:
   prod:
-    tag: /release-.*/
+    branch: feature/basic_proxy
     commands:
       - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production
