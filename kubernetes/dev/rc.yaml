@@ -4,14 +4,14 @@ metadata:
   name: nginx-api-proxy-rc
   labels:
     app: nginx
-    env: production
+    env: development
 spec:
   replicas: 1
   template:
     metadata:
       labels:
         app: nginx
-        env: production
+        env: development
     spec:
       volumes:
       - name: secret-volume
