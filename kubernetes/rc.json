@@ -1,0 +1,49 @@
+{
+  "apiVersion": "v1",
+  "kind": "ReplicationController",
+  "metadata": {
+    "name": "nginx-api-proxy-rc-{{TAG}}",
+    "labels": {
+      "app": "nginx",
+      "env": "{{NAMESPACE}}"
+    }
+  },
+  "spec": {
+    "replicas": 1,
+    "template": {
+      "metadata": {
+        "labels": {
+          "app": "nginx",
+          "env": "{{NAMESPACE}}"
+        }
+      },
+      "spec": {
+        "volumes": [
+          {
+            "name": "secret-volume",
+            "secret": {
+              "secretName": "starbigwednesdayio"
+            }
+          }
+        ],
+        "containers": [
+          {
+            "name": "nginxhttps",
+            "image": "{{QUALIFIED_IMAGE_NAME}}",
+            "ports": [
+              {
+                "containerPort": 443
+              }
+            ],
+            "volumeMounts": [
+              {
+                "mountPath": "/etc/nginx/ssl",
+                "name": "secret-volume"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
