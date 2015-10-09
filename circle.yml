@@ -22,8 +22,8 @@ deployment:
   dev:
     branch: feature/basic_proxy
     commands:
-      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD}
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json
   prod:
     branch: production
     commands:
-      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD}
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json
