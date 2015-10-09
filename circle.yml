@@ -19,7 +19,11 @@ test:
     - echo
 
 deployment:
-  prod:
+  dev:
     branch: feature/basic_proxy
+    commands:
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD}
+  prod:
+    branch: production
     commands:
       - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD}
