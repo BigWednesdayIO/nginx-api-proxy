@@ -20,7 +20,7 @@ test:
 
 deployment:
   dev:
-    branch: feature/basic_proxy
+    branch: master
     commands:
       - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json
   prod:
