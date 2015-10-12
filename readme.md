@@ -2,6 +2,12 @@
 This repos contains a docker image and config for an TLS api proxy to work in Google Container Engine.
 
 ## SSH Keys
+The domain certificate must be concatenated with additional the CA certifices bundle (domain certificate must be first):
+
+``` shell
+cat cat STAR_bigwednesday_io.crt STAR_bigwednesday_io.ca-bundle >> cert_chain.crt
+```
+
 **big-wednesday.conf** expects a cert to be present at **/etc/nginx/ssl/starbigwednesdayio.crt** and the associated key to be present at **/etc/nginx/ssl/starbigwednesdayio.key**. This is achieved using a kubernets secret named `starbigwednesdayio` which is mounted as volume in **rc.json**.
 
 Use the **build-ssl-secret.js** script to create the secret, passing in paths to relevant crt and key files, this will output the secret as a JSON file which can be deployed using the kubernetes command line.
@@ -9,7 +15,7 @@ Use the **build-ssl-secret.js** script to create the secret, passing in paths to
 Create the secret:
 
 ``` shell
-node build-ssl-secret.js starbigwednesdayio ./my-cert.crt ./my-key.key
+node build-ssl-secret.js starbigwednesdayio ./cert_chain.crt ./my-key.key
 ```
 
 Deploy the secret:
