@@ -1,65 +1,71 @@
 # NGINX API Proxy for Google container engine
 This repos contains a docker image and config for an TLS api proxy to work in Google Container Engine.
 
-## Secret
- Use a kubernetes secret to manage the ssl certificate. The container specified in **rc.yaml** expects the secret to be called `starbigwednesdayio` use the **build-ssl-secret.js** script to create the secret passing in paths to relevant crt and key files, this will output a JSON file containing the secret.
+## SSH Keys
+**big-wednesday.conf** expects a cert to be present at **/etc/nginx/ssl/starbigwednesdayio.crt** and the associated key to be present at **/etc/nginx/ssl/starbigwednesdayio.key**. This is achieved using a kubernets secret named `starbigwednesdayio` which is mounted as volume in **rc.json**.
 
-``` javascript
+Use the **build-ssl-secret.js** script to create the secret, passing in paths to relevant crt and key files, this will output the secret as a JSON file which can be deployed using the kubernetes command line.
+
+Create the secret:
+
+``` shell
 node build-ssl-secret.js starbigwednesdayio ./my-cert.crt ./my-key.key
 ```
 
-## Initial deployment steps
- - Create the secret:
+Deploy the secret:
+
+``` shell
+kubectl create -f ./starbigwednesdayio-secret.json
+```
+
+## Initial deployment
 
  ``` shell
- kubectl create -f ./starbigwednesdayio-secret.json
- ```
-
- - Set project id variable:
-
- ``` shell
+ # Set required variables
  export PROJECT_ID=first-footing-108508
+ export NAMESPACE=development
+ export TAG=v1
+ export QUALIFIED_IMAGE_NAME=eu.gcr.io/${PROJECT_ID}/nginx-api-proxy:${TAG}
+ export DEPLOYMENT_ID=1
 
- ```
+ # Build the image and push to the container engine
+ docker build -t ${QUALIFIED_IMAGE_NAME} .
+ gcloud docker push ${QUALIFIED_IMAGE_NAME}
 
- - Build the image and push to the container engine (/set the image version tag as appropriate/)
+ # Create the service
+ cat ./kubernetes/service.json | \
+    perl -pe 's/\{\{(\w+)\}\}/$ENV{$1}/eg' | \
+    kubectl create --namespace=${NAMESPACE} -f -
 
- ``` shell
- docker build -t gcr.io/${PROJECT_ID}/nginx-api-proxy:v1 .
- ```
-
- ``` shell
- gcloud docker push gcr.io/${PROJECT_ID}/nginx-api-proxy:v1
- ```
-
- - Create the service:
-
- ``` shell
- kubectl create -f ./kubernetes/prd/service.yml --namespace=production
- ```
-
- - Create the replication controller (note that the image field must refer to the image and tag created above):
-
- ``` shell
- kubectl create -f ./kubernetes/prd/rc.yaml --namespace=production
+ # Create the replication controller
+ cat ./kubernetes/rc.json | \
+    perl -pe 's/\{\{(\w+)\}\}/$ENV{$1}/eg' | \
+    kubectl create --namespace=${NAMESPACE} -f -
  ```
 
 ## Update steps
- - Build the new image and push to container engine
  ``` shell
- docker build -t gcr.io/${PROJECT_ID}/nginx-api-proxy:v2 .
- ```
-  ``` shell
- gcloud docker push gcr.io/${PROJECT_ID}/nginx-api-proxy:v2
- ```
+ # Set required variables
+ export PROJECT_ID=first-footing-108508
+ export NAMESPACE=development
+ export TAG=v2
+ export DEPLOYMENT_ID=2
+ export QUALIFIED_IMAGE_NAME=eu.gcr.io/${PROJECT_ID}/nginx-api-proxy:${TAG}
 
- - Peform a rolling update on the replication controller
-```shell
-PREVIOUS=$(kubectl get rc -l app=nginx | cut -f1 -d " " | tail -1)
-kubectl rolling-update $PREVIOUS nginx-rc-v2 --image=gcr.io/${PROJECT_ID}/nginx-api-proxy:v2
-```
+ # Build the image and push to the container engine
+ docker build -t ${QUALIFIED_IMAGE_NAME} .
+ gcloud docker push ${QUALIFIED_IMAGE_NAME}
+
+ # Peform a rolling update on the replication controller
+ OLD_RC=$(~/google-cloud-sdk/bin/kubectl get rc -l "app=nginx" --namespace=${NAMESPACE} -o template --template="{{(index .items 0).metadata.name}}")
+
+ export REPLICAS=$(~/google-cloud-sdk/bin/kubectl get rc ${OLD_RC} --namespace=${NAMESPACE} -o template --template="{{.spec.replicas}}")
+
+ cat ./kubernetes/rc.json | \
+    perl -pe 's/\{\{(\w+)\}\}/$ENV{$1}/eg' | \
+    kubectl rolling-update ${OLD_RC} --namespace=${NAMESPACE} -f -
+ ```
 
 ## Useful docs
 - http://kubernetes.io/v1.0/docs/user-guide/connecting-applications.html#securing-the-service
 - http://blog.kubernetes.io/2015/07/strong-simple-ssl-for-kubernetes.html
-
