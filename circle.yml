@@ -1,0 +1,29 @@
+machine:
+  python:
+    version: 2.7.3
+  services:
+    - docker
+
+checkout:
+  post:
+    - git submodule update --init
+
+dependencies:
+  cache_directories:
+    - ~/google-cloud-sdk
+  override:
+    - scripts/ensure_glcoud_installed.sh
+
+test:
+  override:
+    - echo
+
+deployment:
+  dev:
+    branch: master
+    commands:
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json
+  prod:
+    branch: production
+    commands:
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json
