@@ -7,7 +7,7 @@ machine:
 checkout:
   post:
     - git submodule update --init
-    - echo $(git tag --points-at 07811ef)
+    - echo $(git tag --points-at $CIRCLE_SHA1)
 
 dependencies:
   cache_directories:
