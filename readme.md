@@ -5,7 +5,7 @@ This repos contains a docker image and config for an TLS api proxy to work in Go
 The domain certificate must be concatenated with additional the CA certifices bundle (domain certificate must be first):
 
 ``` shell
-cat cat STAR_bigwednesday_io.crt STAR_bigwednesday_io.ca-bundle >> cert_chain.crt
+cat STAR_bigwednesday_io.crt STAR_bigwednesday_io.ca-bundle >> cert_chain.crt
 ```
 
 **big-wednesday.conf** expects a cert to be present at **/etc/nginx/ssl/starbigwednesdayio.crt** and the associated key to be present at **/etc/nginx/ssl/starbigwednesdayio.key**. This is achieved using a kubernets secret named `starbigwednesdayio` which is mounted as volume in **rc.json**.
