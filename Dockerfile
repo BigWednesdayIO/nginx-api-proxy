@@ -2,7 +2,7 @@ FROM nginx
 
 RUN rm /etc/nginx/conf.d/default.conf
 
-COPY big-wednesday.conf /etc/nginx/conf.d/big-wednesday.conf.template
+COPY big-wednesday.conf.template /etc/nginx/conf.d/
 COPY includes/ /etc/nginx/conf.d/includes/
 COPY run_nginx.sh /opt/run_nginx.sh
 
