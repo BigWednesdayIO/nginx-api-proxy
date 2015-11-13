@@ -21,9 +21,9 @@
       "spec": {
         "volumes": [
           {
-            "name": "secret-volume",
+            "name": "ssl-certificates",
             "secret": {
-              "secretName": "starbigwednesdayio"
+              "secretName": "ssl-certificates"
             }
           }
         ],
@@ -39,7 +39,7 @@
             "volumeMounts": [
               {
                 "mountPath": "/etc/nginx/ssl",
-                "name": "secret-volume"
+                "name": "ssl-certificates"
               }
             ]
           }
