@@ -29,11 +29,14 @@
         ],
         "containers": [
           {
-            "name": "nginxhttps",
+            "name": "nginx",
             "image": "{{QUALIFIED_IMAGE_NAME}}",
             "ports": [
               {
                 "containerPort": 443
+              },
+              {
+                "containerPort": 80
               }
             ],
             "volumeMounts": [
