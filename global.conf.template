@@ -1,0 +1,13 @@
+server_tokens off;
+
+upstream orderable {
+        server {{ORDERABLE_SVC_SERVICE_HOST}}:{{ORDERABLE_SVC_SERVICE_PORT}};
+}
+
+upstream search_svc_url {
+        server {{SEARCH_API_SVC_SERVICE_HOST}}:{{SEARCH_API_SVC_SERVICE_PORT}};
+}
+
+upstream checkout_svc_url {
+        server {{CHECKOUT_API_SVC_SERVICE_HOST}}:{{CHECKOUT_API_SVC_SERVICE_PORT}};
+}
