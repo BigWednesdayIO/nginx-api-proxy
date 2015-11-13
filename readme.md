@@ -8,20 +8,26 @@ The domain certificate must be concatenated with additional the CA certifices bu
 cat STAR_bigwednesday_io.crt STAR_bigwednesday_io.ca-bundle >> cert_chain.crt
 ```
 
-**big-wednesday.conf** expects a cert to be present at **/etc/nginx/ssl/starbigwednesdayio.crt** and the associated key to be present at **/etc/nginx/ssl/starbigwednesdayio.key**. This is achieved using a kubernets secret named `starbigwednesdayio` which is mounted as volume in **rc.json**.
+The nginx proxy expects the following certs to exist and be valid:
+  * /etc/nginx/ssl/starbigwednesdayio.crt
+  * /etc/nginx/ssl/starbigwednesdayio.key
+  * /etc/nginx/ssl/starorderableco.crt
+  * /etc/nginx/ssl/starorderableco.key
 
-Use the **build-ssl-secret.js** script to create the secret, passing in paths to relevant crt and key files, this will output the secret as a JSON file which can be deployed using the kubernetes command line.
+This is achieved using a kubernets secret named `ssl-certificates"` which is mounted as a volume in **rc.json**.
+
+Use the **build-ssl-secret.js** script to create the secret, passing in the path to a directory containing these files (e.g. /etc/nginx/ssl). This will output the secret as a JSON file which can be deployed using the kubernetes command line.
 
 Create the secret:
 
 ``` shell
-node build-ssl-secret.js starbigwednesdayio ./cert_chain.crt ./my-key.key
+node build-ssl-secret.js /ssl_certs_directory
 ```
 
 Deploy the secret:
 
 ``` shell
-kubectl create -f ./starbigwednesdayio-secret.json
+kubectl create -f ./ssl-certificates-secret.json
 ```
 
 ## Initial deployment
