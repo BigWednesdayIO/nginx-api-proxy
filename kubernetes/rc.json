@@ -9,7 +9,7 @@
     }
   },
   "spec": {
-    "replicas": 1,
+    "replicas": {{REPLICAS}},
     "template": {
       "metadata": {
         "labels": {
