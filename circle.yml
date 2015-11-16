@@ -1,6 +1,8 @@
 machine:
   python:
     version: 2.7.3
+  node:
+    version: 4.1.0
   services:
     - docker
 
@@ -13,6 +15,7 @@ dependencies:
     - ~/google-cloud-sdk
   override:
     - scripts/ensure_glcoud_installed.sh
+    - npm install -g json
 
 test:
   override:
@@ -20,10 +23,10 @@ test:
 
 deployment:
   dev:
-    branch: master
+    branch: feature/kube_svc_and_rc_deploy
     commands:
-      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
   prod:
     branch: production
     commands:
-      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
