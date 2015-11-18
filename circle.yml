@@ -12,7 +12,7 @@ dependencies:
   cache_directories:
     - ~/google-cloud-sdk
   override:
-    - scripts/ensure_glcoud_installed.sh
+    - scripts/install_deployment_tools.sh
 
 test:
   override:
@@ -22,8 +22,8 @@ deployment:
   dev:
     branch: master
     commands:
-      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
   prod:
     branch: production
     commands:
-      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json
+      - scripts/rolling_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
