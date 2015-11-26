@@ -16,6 +16,10 @@ upstream customers_svc_url {
         server {{CUSTOMERS_API_SVC_SERVICE_HOST}}:{{CUSTOMERS_API_SVC_SERVICE_PORT}};
 }
 
+upstream postcodes_svc_url {
+        server {{POSTCODES_API_SVC_SERVICE_HOST}}:{{POSTCODES_API_SVC_SERVICE_PORT}};
+}
+
 server {
         listen 80 default_server;
 
