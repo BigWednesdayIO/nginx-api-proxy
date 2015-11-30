@@ -2,7 +2,7 @@
   "apiVersion": "v1",
   "kind": "ReplicationController",
   "metadata": {
-    "name": "nginx-api-proxy-rc-{{TAG}}",
+    "name": "nginx-api-proxy-rc-{{VERSION}}",
     "labels": {
       "app": "nginx",
       "env": "{{NAMESPACE}}"
