@@ -22,7 +22,7 @@ deployment:
   dev:
     branch: master
     commands:
-      - OVERRIDE_IMAGE_TAG=dev scripts/kubernetes_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
+      - scripts/kubernetes_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
   prod:
     branch: production
     commands:
