@@ -28,6 +28,10 @@ upstream products_svc_url {
         server {{PRODUCTS_API_SVC_SERVICE_HOST}}:{{PRODUCTS_API_SVC_SERVICE_PORT}};
 }
 
+upstream orderable_search_svc_url {
+        server {{ORDERABLE_SEARCH_API_SVC_SERVICE_HOST}}:{{ORDERABLE_SEARCH_API_SVC_SERVICE_PORT}};
+}
+
 server {
         listen 80 default_server;
 
