@@ -24,6 +24,6 @@ deployment:
     commands:
       - scripts/kubernetes_deploy.sh nginx-api-proxy app=nginx development ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
   prod:
-    branch: production
+    tag: /v.*/
     commands:
       - scripts/kubernetes_deploy.sh nginx-api-proxy app=nginx production ${PWD} ${PWD}/kubernetes/rc.json ${PWD}/kubernetes/service.json
