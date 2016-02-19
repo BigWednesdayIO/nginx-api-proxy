@@ -6,5 +6,6 @@ COPY global.conf.template /etc/nginx/conf.d/
 COPY *.conf /etc/nginx/conf.d/
 COPY includes/ /etc/nginx/conf.d/includes/
 COPY run_nginx.sh /opt/run_nginx.sh
+COPY assets/images/placeholder.jpg /usr/share/nginx/html
 
 CMD bash /opt/run_nginx.sh
